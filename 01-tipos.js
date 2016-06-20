@@ -6,6 +6,8 @@ var casper = require('casper').create({
   }
 });
 
+var fs = require('fs');
+
 var initialURL = 'https://servicios.aduanas.gub.uy/LuciapubX/hpudbar2.aspx';
 var getOptions = function(){
   var options = document.querySelectorAll('#vVPRODCAP option');
@@ -14,7 +16,7 @@ var getOptions = function(){
 
 casper.start(initialURL, function(){
   var options = casper.evaluate(getOptions);
-  casper.echo(options);
+  fs.write('tipos.txt', options.join('\n'), 'w');
 });
 
 casper.run();
