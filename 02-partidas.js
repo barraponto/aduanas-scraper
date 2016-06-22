@@ -1,8 +1,10 @@
 var casper = require('casper').create({
   verbose: true,
-  loglevel: 'debug',
+  loglevel: 'info',
+  timeout: 120000,
+  waitTimeout: 120000,
   pageSettings: {
-    userAgent: 'Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/49.0'
   }
 });
 var fs = require('fs');
@@ -21,7 +23,8 @@ var walkpages = function(){
     '#Sf1ContainerTbl tbody',
     function then(){
       var partidas = casper.evaluate(getPartidas);
-      fs.write('partidas/tipo-'+tipo+'.txt', partidas.join('\n')+'\n', 'a');
+      casper.echo('Writing ' + partidas.length + ' new partidas to `partidas/tipo-'+tipo+'.txt` file.');
+      fs.write('partidas/tipo-' + tipo + '.txt', partidas.join('\n') + '\n', 'a');
 
       if (casper.exists('.PagingButtonsNext[onclick]')) {
         casper.click('.PagingButtonsNext[onclick]');
