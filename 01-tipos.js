@@ -1,3 +1,4 @@
+TEST 
 var casper = require('casper').create({
   verbose: true,
   loglevel: 'info',
