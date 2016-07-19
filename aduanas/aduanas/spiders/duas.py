@@ -7,6 +7,16 @@ class DuasSpider(scrapy.Spider):
     name = "duas"
     allowed_domains = ["servicios.aduanas.gub.uy"]
 
+    def __init__(self, urls=None, *args, **kwargs):
+        super(DuasSpider, self).__init__(*args, **kwargs)
+        self.urls = urls
+
+    def start_requests(self):
+        if self.urls:
+            with open(self.urls) as urlfile:
+                for line in urlfile:
+                    yield scrapy.Request(url=line.strip())
+
     def parse(self, response):
         loader = AduanasItemLoader(response=response)
         loader.add_css('fecha', '#span_FECH_INGSI::text')
