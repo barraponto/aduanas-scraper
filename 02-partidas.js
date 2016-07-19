@@ -4,7 +4,7 @@ var casper = require('casper').create({
   timeout: 120000,
   waitTimeout: 120000,
   pageSettings: {
-    userAgent: 'Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/49.0'
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64; rv:47.0) Gecko/20100101 Firefox/47.0'
   }
 });
 var fs = require('fs');
