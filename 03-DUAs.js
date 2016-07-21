@@ -46,7 +46,8 @@ casper.start(initialURL, function(){
   this.fill('#MAINFORM', {
     vPARTIDA: partida,
     vVFCHINI: '01/01/2016',
-    vVFCHFNL: '31/12/2016'
+    vVFCHFNL: '31/12/2016',
+    vTIPO_REGI: 'E'
   });
 
   // submitting use the casper.fill handler doesn't work. we have to click.
