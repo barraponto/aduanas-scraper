@@ -37,4 +37,11 @@ class DuasSpider(scrapy.Spider):
         loader.add_css('aduana_codigo', '#span_vVADUIS::text')
         loader.add_css('aduana_nombre', '#span_vVADUDSC2::text')
         loader.add_css('tributos', '#span_TOTP_MN::text')
-        return loader.load_item()
+        loader.add_item_links('[name="GXState"]::attr(value)')
+        item = loader.load_item()
+        for link in item['links']:
+            yield scrapy.Request(response.urljoin(link), callback=self.parse_item)
+        yield item
+
+    def parse_item(self, response):
+        pass
