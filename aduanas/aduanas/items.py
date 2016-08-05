@@ -7,9 +7,10 @@ def strip(value):
     return value.strip()
 
 class AduanasItemLoader(ItemLoader):
+    default_item_class = dict
     default_input_processor = processors.MapCompose(strip)
     default_output_processor = processors.TakeFirst()
-    default_item_class = dict
+    links_out = processors.Identity()
 
     def add_item_links(self, selector):
         data = json.loads(self.selector.css(selector).extract_first())

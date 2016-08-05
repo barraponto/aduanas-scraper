@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import logging
 from aduanas.items import AduanasItemLoader
 
+logger = logging.getLogger(__name__)
 
 class DuasSpider(scrapy.Spider):
     name = "duas"
@@ -40,8 +42,11 @@ class DuasSpider(scrapy.Spider):
         loader.add_item_links('[name="GXState"]::attr(value)')
         item = loader.load_item()
         for link in item['links']:
-            yield scrapy.Request(response.urljoin(link), callback=self.parse_item)
-        yield item
+            yield scrapy.Request(response.urljoin(link),
+                                 callback=self.parse_item,
+                                 meta={'item': item})
 
     def parse_item(self, response):
-        pass
+        item = response.meta['item']
+        item['pais_destino'] = response.css('#span_vPPROC::text').extract_first()
+        yield item
