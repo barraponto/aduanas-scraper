@@ -9,7 +9,9 @@ var casper = require('casper').create({
 });
 var fs = require('fs');
 var partida = casper.cli.raw.get('partida');
+var regimen = casper.cli.raw.get('regimen');
 var initialURL = 'https://servicios.aduanas.gub.uy/LuciapubX/hCN1Publico.aspx';
+var filename = 'partida-' + regimen + '-' + partida + '.txt';
 
 var getDUAs = function(){
   var duas = document.querySelectorAll('td[colindex="1"] a');
@@ -23,11 +25,11 @@ var walkpages = function(){
     '#span_vNDESCRIP, #TABLE1',
     function then(){
       var duas = casper.evaluate(getDUAs);
-      casper.echo('Writing ' + duas.length + ' new DUAs to `DUAs/partida-'+partida+'.txt` file.');
-      fs.write('DUAs/partida-' + partida + '.txt', duas.join('\n') + '\n', 'a');
+      casper.echo('Writing ' + duas.length + ' new DUAs to `DUAs/' + filename + '` file.');
+      fs.write('DUAs/' + filename, duas.join('\n') + '\n', 'a');
 
-      if (casper.exists('.PagingButtonsNext[onclick]')) {
-        casper.click('.PagingButtonsNext[onclick]');
+      if (casper.exists('.PagingButtonsNext:not(.gx-grid-paging-disabled)')) {
+        casper.click('.PagingButtonsNext');
         walkpages();
       } else {
         casper.exit();
@@ -47,7 +49,7 @@ casper.start(initialURL, function(){
     vPARTIDA: partida,
     vVFCHINI: '01/01/2016',
     vVFCHFNL: '31/12/2016',
-    vTIPO_REGI: 'E'
+    vTIPO_REGI: regimen
   });
 
   // submitting use the casper.fill handler doesn't work. we have to click.
